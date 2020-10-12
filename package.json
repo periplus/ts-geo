@@ -1,0 +1,50 @@
+{
+	"name": "ts-geo",
+	"version": "0.0.1",
+	"author": "Adrian Ber",
+	"license": "MIT",
+	"description": "Geo utils in Typescript",
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"lib/**/*"
+	],
+	"scripts": {
+		"lint-ts": "tslint -p tsconfig.json",
+		"prebuild-lib": "npm run lint-ts",
+		"build-lib": "tsc",
+		"build": "npm run build-lib",
+		"pretest": "npm run build",
+		"test": "karma start src/karma.conf.js",
+		"prepublish": "npm run build"
+	},
+	"devDependencies": {
+		"@types/jasmine": "latest",
+		"@types/jasminewd2": "latest",
+		"@types/mapbox__sphericalmercator": "latest",
+		"@types/node": "^12.11.1",
+		"@types/proj4": "latest",
+		"@types/turf": "latest",
+		"jasmine-core": "latest",
+		"jasmine-spec-reporter": "latest",
+		"karma": "latest",
+		"karma-chrome-launcher": "latest",
+		"karma-cli": "latest",
+		"karma-coverage-istanbul-reporter": "latest",
+		"karma-jasmine": "latest",
+		"karma-jasmine-html-reporter": "latest",
+		"karma-typescript": "latest",
+		"@mapbox/sphericalmercator": "latest",
+		"@turf/projection": "latest",
+		"proj4": "latest",
+		"rxjs": "latest",
+		"tslint": "latest",
+		"typescript": "latest"
+	},
+	"peerDependencies": {
+		"rxjs": ">=5"
+	}
+}
