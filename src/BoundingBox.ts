@@ -12,6 +12,23 @@ export interface BoundingBox {
 }
 
 export namespace BoundingBox {
+	export function getCenter(bbox: BoundingBox): Point {
+		return new Point((bbox.left + bbox.right) / 2, (bbox.top + bbox.bottom) / 2);
+	}
+
+	export function clipCenter(bbox: BoundingBox, radius: number | Point): BoundingBox {
+		if (typeof radius === "number") {
+			radius = new Point(radius, radius);
+		}
+		const center = getCenter(bbox);
+		return {
+				bottom: center.y > bbox.bottom ? center.y - radius.y / 2 : center.y + radius.y / 2,
+				top: center.y > bbox.top ? center.y - radius.y / 2 : center.y + radius.y / 2,
+				left: center.x > bbox.left ? center.x - radius.x / 2 : center.x + radius.x / 2,
+				right: center.x > bbox.right ? center.x - radius.x / 2 : center.x + radius.x / 2
+				};
+	}
+
 	export function getBBoxCoordinaterForMapViewport(projection: Projection,
 			center: Coordinates,
 			zoom: number,
@@ -21,10 +38,10 @@ export namespace BoundingBox {
 		const topLeft = projection.toGeo(new Point(centerOnMap.x - w2, centerOnMap.y - h2), zoom);
 		const bottomRight = projection.toGeo(new Point(centerOnMap.x + w2, centerOnMap.y + h2), zoom);
 		return {
-			top: topLeft.longitude,
-			left: topLeft.latitude,
-			bottom: bottomRight.longitude,
-			right: bottomRight.latitude
+			top: topLeft.latitude,
+			left: topLeft.longitude,
+			bottom: bottomRight.latitude,
+			right: bottomRight.longitude
 		};
 	}
 
@@ -49,8 +66,10 @@ export namespace BoundingBox {
 
 	export function splitBBox(bbox: BoundingBox, max: number): BoundingBox[] {
 		const bboxes = [];
-		for (let x = bbox.left; x < bbox.right; x += max) {
-			for (let y = bbox.top; y < bbox.bottom; y += max) {
+		const xSign = Math.sign(bbox.right - bbox.left);
+		const ySign = Math.sign(bbox.bottom - bbox.top);
+		for (let x = bbox.left; x * xSign < bbox.right * xSign; x += xSign * max) {
+			for (let y = bbox.top; y * ySign < bbox.bottom * ySign; y += ySign * max) {
 				const b = {
 					top: y, bottom: y + max,
 					left: x, right: x + max

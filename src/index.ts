@@ -10,5 +10,6 @@ export * from "./PointUtils";
 export * from "./Projection";
 export * from "./projections/MapboxProjection";
 export * from "./projections/MathProjection";
+export * from "./Provider";
 export * from "./TileSource";
 export * from "./ZoomLevel";

@@ -1,3 +1,4 @@
+import { Provider } from "Provider";
 import { MathUtils } from "./MathUtils";
 import { Point } from "./Point";
 
@@ -7,6 +8,7 @@ export interface TileSource {
 	tileSize: number;
 	baseUrl: string;
 	name: string;
+	provider: Provider;
 	description: string;
 }
 
